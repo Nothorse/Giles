@@ -1,0 +1,9 @@
+#!/bin/bash
+# Script works if you download and expand fanficdownloader into lib/
+# get fanficdownloader here: 
+# http://code.google.com/p/fanficdownloader/downloads/list
+export DIR=`dirname $0`
+if [ -d "fanficdownloader" ]; then
+  cd $DIR/fanficdownloader/
+  python ./downloader.py $1
+fi

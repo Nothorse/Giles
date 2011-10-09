@@ -5,6 +5,7 @@ SETUP:
 
 Install the source anywhere you webserver can access it.
 Create a directory for your books. I use "Books" at the root of my userdir.
+Edit config.php
 
 Add the following entries to your apache config.
 If you use a different webserver, prepare to virtual hosts along these lines
