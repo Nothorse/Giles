@@ -13,35 +13,41 @@ Currently there's a bit of manual work to get Giles going. Also some paths and m
 * Add the following entries to your apache config.
   (If you use a different webserver, prepare to virtual hosts along these lines)
 
+---
+
+
+
     Listen 8080
     <VirtualHost *:8080>
-      ServerName [HOSTNAME]
-      ServerAlias [OPTIONAL_ALIASES]
-      DocumentRoot [PATH_TO_SOURCE]
-      DirectoryIndex index.php
-      <Directory [PATH_TO_SOURCE]>
-          Options +ExecCGI
-          AllowOverride All
-          Order allow,deny
-          Allow from all
-      </Directory>
+        ServerName [HOSTNAME]
+        ServerAlias [OPTIONAL_ALIASES]
+        DocumentRoot [PATH_TO_SOURCE]
+        DirectoryIndex index.php
+        <Directory [PATH_TO_SOURCE]>
+            Options +ExecCGI
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
     </VirtualHost>
-    
+
+
     Listen 9999
     <VirtualHost *:9999>
-      ServerName [HOSTNAME]
-      ServerAlias [OPTIONAL_ALIASES]
-      DocumentRoot [PATH_TO_SOURCE]
-      DirectoryIndex index.php
-      <Directory [PATH_TO_SOURCE]>
-          Options +ExecCGI
-          AllowOverride All
-          Order allow,deny
-          Allow from all
-      </Directory>
+        ServerName [HOSTNAME]
+        ServerAlias [OPTIONAL_ALIASES]
+        DocumentRoot [PATH_TO_SOURCE]
+        DirectoryIndex index.php
+        <Directory [PATH_TO_SOURCE]>
+            Options +ExecCGI
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
     </VirtualHost>
+
 ---
- 
+
 If you want Stanza to pick up your Library automagically, prepare a way to add 
 the following record to your zeroconf service:
 
