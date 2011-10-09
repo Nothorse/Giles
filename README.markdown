@@ -81,3 +81,8 @@ I use a Launch Agent in ~/Library/LaunchAgents/org.nothorse.RegisterGiles
     </dict>
     </plist>
     
+---
+
+To add a book to the catalog call addbook.php
+  
+    > ~/your/path/to/source/addbook.php -f agoodbook.epub
