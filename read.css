@@ -9,16 +9,18 @@ border: none;
 }
 
 
+
 .toc {
  position:fixed; 
  top: -5px;
-/*
+ background-color: #666;
  width: 250px;
-*/
+ height: 100%;
  left: -5px;
  border: 2px #ccc solid;
  border-bottom-right-radius: 15px;
  padding: 10px;
+ overflow: auto;
 }
 
 .toc a{

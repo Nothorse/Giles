@@ -1,27 +1,27 @@
 <?php
 require('uuid.cls.php');
 class opdsdisplay {
-  
+
   private $dom;// DomDocument();
-  
+
   private $feed;
-  
+
   const ATOM = 'http://www.w3.org/2005/Atom';
-  
+
   const BOOKLIST = 'application/atom+xml;profile=opds-catalog;kind=acquisition';
-  
+
   const CATLIST = "application/atom+xml;profile=opds-catalog;kind=navigation";
-  
+
   const BOOK = 'application/epub+zip';
-  
+
   const RELSUBLIST = 'subsection';
-  
+
   const RELDOWNLOAD = 'http://opds-spec.org/acquisition/open-access';
-  
-  
-  
+
+
+
   private $selfurl;
-  
+
   public function __construct() {
     $this->selfurl = 'http://'.$_SERVER["SERVER_NAME"] . ':' . $_SERVER["SERVER_PORT"] . $_SERVER['SCRIPT_NAME'];
     $this->dom = new DOMDocument('1.0', 'utf-8');
@@ -77,7 +77,7 @@ class opdsdisplay {
     //$dom = $this->prettyprint($this->dom);
     print $this->dom->saveXML();
   }
-  
+
   public function printBookList($list, $divid = 'list', $curid = null) {
     foreach ($list as $id => $book) {
       $entry = $this->dom->createElementNS(self::ATOM, 'entry');
@@ -86,7 +86,7 @@ class opdsdisplay {
       $entry->appendChild($this->dom->createElementNS(self::ATOM, 'id', 'urn:giles:'.$book->id));
       $author = $this->dom->createElementNS(self::ATOM, 'author');
       $author->appendChild($this->dom->createElementNS(self::ATOM, 'name', $book->author));
-      $author->appendChild($this->dom->createElementNS(self::ATOM, 'uri', $this->selfurl . '/author/'.urlencode($book->author)));
+      $author->appendChild($this->dom->createElementNS(self::ATOM, 'uri', $this->selfurl . '/author/'.urlencode(str_replace(" ", '+', $book->author))));
       $entry->appendChild($author);
       $link = $this->dom->createElementNS(self::ATOM, 'link');
       $link->setAttribute('rel', 'http://opds-spec.org/acquisition/open-access');
@@ -105,7 +105,7 @@ class opdsdisplay {
     //$dom = $this->prettyprint($this->dom);
     print $this->dom->saveXML();
   }
-  
+
   public function printAuthorList($list, $what, $current= null) {
     if($current) return;
     foreach ($list as $id => $author) {
@@ -133,7 +133,7 @@ class opdsdisplay {
     //$dom = $this->prettyprint($this->dom);
     print $this->dom->saveXML();
   }
-  
+
   public function getFormattedList($type = 'author') {
     $db = new library();
     $list = $db->getAuthorList();
@@ -144,7 +144,7 @@ class opdsdisplay {
     $formattedlist .= '</ul>';
     return $formattedlist;
   }
-  
+
   public function listTags() {
     $db = new library();
     $list = $db->getTagList(false);
@@ -154,16 +154,16 @@ class opdsdisplay {
     }
     return "<ul>$taglist</ul>";
   }
-  
+
   public function printHeader() {
     header('Content-type: application/xml');
   }
-  
+
   public function buildPage() {
-  
-  
+
+
   }
-  
+
   public function showDetails($book, $protocol = 'http') {
     $geturl = "$protocol://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title;
     $editurl = "http://".SERVER.BASEURL."/edit/".$book->id.'/'.$book->title;
@@ -180,7 +180,7 @@ class opdsdisplay {
 EOT;
     return $details;
   }
-  
+
   public function getEditform($book, $url) {
     $tags = implode(', ', $book->tags);
     $form = <<<EOT
@@ -191,7 +191,7 @@ EOT;
     border: 2px #000 solid;
     padding: 3px;
   }
-  
+
   form {
     width: 800px;
     position: relative;
@@ -205,7 +205,7 @@ EOT;
     width: 800px;
     position:relative;
   }
-  
+
   input, textarea {
     width: 700px;
     height: 25px;
@@ -215,7 +215,7 @@ EOT;
     position: relative;
     display: block;
   }
-  
+
   textarea {
     height: 150px;
     line-height: 25px;
@@ -233,12 +233,12 @@ EOT;
 EOT;
   return $form;
   }
-  
+
   public function printFoot() {
 //     print '</feed>';
    }
-   
-   
+
+
   /**
    * prettyprint -- get rid of superfluous namespace declarations
    * @param  DOMDocument $dom
@@ -248,8 +248,8 @@ EOT;
     $dom->normalize();
     $dom->preserveWhiteSpace = false;
     $dom->formatOutput = true;
-    $outXML = $dom->saveXML(); 
-    $dom->loadXML($outXML, LIBXML_NSCLEAN); 
+    $outXML = $dom->saveXML();
+    $dom->loadXML($outXML, LIBXML_NSCLEAN);
     return $dom;
   }
 
@@ -261,4 +261,4 @@ EOT;
     return $link;
   }
 
-}  
+}

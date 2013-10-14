@@ -2,14 +2,14 @@
 require_once(__DIR__ . "/config.php");
 
 class library{
-  
+
   private $db;
 
   public function __construct($db = null) {
     if (!$db) {
       $db = '/Users/'.USER.'/Library/Preferences/org.nothorse.ebooklib.library.sqlite';
     }
-    $this->db = $this->getdb($db);  
+    $this->db = $this->getdb($db);
     $this->checkTables();
   }
 
@@ -17,16 +17,16 @@ class library{
   private function getdb($dbname = "library.sqlite") {
     $base=new SQLite3($dbname);
     if (!$base)
-    { 
+    {
       echo "SQLite NOT supported.\n";
       exit($err);
     }
     else
     {
       return $base;
-    }  
+    }
   }
-  
+
   private function checkTables() {
     $q=$this->db->query("PRAGMA table_info(books)");
     if ($q->fetchArray() < 1) {
@@ -62,7 +62,7 @@ class library{
         ) exit ("Create SQLite Database Error\n");
     }
   }
-  
+
   public function insertBook($ebook) {
     $qry = "insert into books (title, 
                                author, 
@@ -95,14 +95,14 @@ class library{
       $this->db->exec("INSERT INTO taggedbooks (bookid, tagid) values ('$bookid', '$tagid')");
     }
   }
-  
+
   public function updateBook($ebook) {
     $qry = "update books
-              SET  title = '".sqlite_escape_string($ebook->title)."', 
-                  author = '".sqlite_escape_string($ebook->author)."', 
-              sortauthor = '".sqlite_escape_string($ebook->sortauthor)."', 
+              SET  title = '".sqlite_escape_string($ebook->title)."',
+                  author = '".sqlite_escape_string($ebook->author)."',
+              sortauthor = '".sqlite_escape_string($ebook->sortauthor)."',
                  summary = '".sqlite_escape_string($ebook->summary)."'
-             WHERE md5id = '".sqlite_escape_string($ebook->id)."'"; 
+             WHERE md5id = '".sqlite_escape_string($ebook->id)."'";
     $this->db->exec($qry);
     $qry = "select * from books where md5id = '".$ebook->id."'";
     $res = $this->db->query($qry);
@@ -119,7 +119,7 @@ class library{
       $this->db->exec("INSERT INTO taggedbooks (bookid, tagid) values ('$bookid', '$tagid')");
     }
   }
-  
+
   public function getBook($md5id) {
     $qry = "select * from books where md5id = '".$md5id."'";
     $res = $this->db->query($qry);
@@ -138,11 +138,12 @@ class library{
     }
     return $book;
   }
-  
+
   public function getBooklist($order = 'added desc', $where = '', $limit = false) {
+    $lwhere = urldecode($where); 
     $booklist = array();
     $limstr = ($limit) ? " LIMIT 30": '';
-    $qry = "select * from books $where order by $order $limstr";
+    $qry = "select * from books $lwhere order by $order $limstr";
     $res = $this->db->query($qry);
     while ($row = $res->fetchArray()) {
         $book = new ebook();
@@ -154,7 +155,7 @@ class library{
         $book->id = $row['md5id'];
         $book->updated = $row['added'];
         $booklist[$book->sortauthor.$book->title] = $book;
-    }  
+    } 
     return $booklist;
   } 
   
@@ -165,12 +166,12 @@ class library{
     while ($row = $res->fetchArray()) {
       if(strlen($row['title']) > 0) {
         $booklist[$row['author']]['name'] = $row['author'];
-        $booklist[$row['author']]['books'][] = $row['title']; 
+        $booklist[$row['author']]['books'][] = $row['title'];
       }
-    }  
+    }
     return $booklist;
   }
-  
+
   public function getTagList($updatedtags = true) {
     $booklist = array();
     if(!$updatedtags) {
@@ -182,12 +183,12 @@ class library{
       if(strlen($row['tag']) > 0) {
         $count = $this->db->querySingle("select count(bookid) from taggedbooks where tagid = '".$row['id']."'");
         $booklist[$row['tag']]['name'] = $row['tag'];
-        $booklist[$row['tag']]['books'][] = $count; 
+        $booklist[$row['tag']]['books'][] = $count;
       }
-    }  
+    }
     return $booklist;
   }
-  
+
   public function getTaggedBooks($tag, $order = 'added desc') {
     $booklist = array();
     $qry = "select * from books join taggedbooks on taggedbooks.bookid = books.id join tags on tags.id = taggedbooks.tagid where tag = '$tag' order by $order";
@@ -202,16 +203,16 @@ class library{
         $book->id = $row['md5id'];
         $book->updated = $row['added'];
         $booklist[$book->sortauthor.$book->title] = $book;
-    }  
+    }
     return $booklist;
   }
-  
+
   public function deleteBook($book) {
     $bookid = $this->db->querySingle('select id from books where md5id =\''.$book->id."'");
     $this->db->exec("delete from books where id = '$bookid'");
     $this->db->exec("delete from taggedbooks where bookid = '$bookid'");
     rename(dirname($book->file), "/Users/".USER."/.Trash/".basename(dirname($book->file)));
   }
-  
+
 }
 ?>
