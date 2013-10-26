@@ -72,12 +72,12 @@ class library{
                                md5id, 
                                added) 
                                values 
-                   ('".sqlite_escape_string($ebook->title)."',
-                    '".sqlite_escape_string($ebook->author)."', 
-                    '".sqlite_escape_string($ebook->sortauthor)."', 
-                    '".sqlite_escape_string($ebook->file)."', 
-                    '".sqlite_escape_string($ebook->summary)."', 
-                    '".sqlite_escape_string($ebook->id)."', 
+                   ('".SQLite3::escapeString($ebook->title)."',
+                    '".SQLite3::escapeString($ebook->author)."', 
+                    '".SQLite3::escapeString($ebook->sortauthor)."', 
+                    '".SQLite3::escapeString($ebook->file)."', 
+                    '".SQLite3::escapeString($ebook->summary)."', 
+                    '".SQLite3::escapeString($ebook->id)."', 
                     '".time()."')";
     $this->db->exec($qry);
     $qry = "select * from books where md5id = '".$ebook->id."'";
@@ -98,11 +98,11 @@ class library{
 
   public function updateBook($ebook) {
     $qry = "update books
-              SET  title = '".sqlite_escape_string($ebook->title)."',
-                  author = '".sqlite_escape_string($ebook->author)."',
-              sortauthor = '".sqlite_escape_string($ebook->sortauthor)."',
-                 summary = '".sqlite_escape_string($ebook->summary)."'
-             WHERE md5id = '".sqlite_escape_string($ebook->id)."'";
+              SET  title = '".SQLite3::escapeString($ebook->title)."',
+                  author = '".SQLite3::escapeString($ebook->author)."',
+              sortauthor = '".SQLite3::escapeString($ebook->sortauthor)."',
+                 summary = '".SQLite3::escapeString($ebook->summary)."'
+             WHERE md5id = '".SQLite3::escapeString($ebook->id)."'";
     $this->db->exec($qry);
     $qry = "select * from books where md5id = '".$ebook->id."'";
     $res = $this->db->query($qry);

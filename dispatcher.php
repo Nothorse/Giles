@@ -87,7 +87,7 @@ class Dispatcher {
     setcookie('booksel', 'author', 0, '/');
     list($discard,$method, $author) = explode('/', $_SERVER['PATH_INFO']);
     setcookie('selval', $author, 0, '/');
-    $list = $db->getBookList('added desc', 'where author = \'' . sqlite_escape_string($path[1]) . '\'');
+    $list = $db->getBookList('added desc', 'where author = \'' . SQLite3::escapeString($path[1]) . '\'');
     $this->display->printHeader();
     $alist = $this->listdir_by_author($path, $db);
     $this->display->printAuthorList($alist, 'author', $author);
@@ -131,7 +131,7 @@ class Dispatcher {
     $list = ($type == 'tag') ? $db->getTagList() : $db->getAuthorlist();
     $this->display->printHeader();
     $this->display->printAuthorList($list, $type, $current);
-    $booklist = ($type == 'tag')? $db->getTaggedBooks($current) : $db->getBookList('added desc', 'where author = \'' . sqlite_escape_string($current) . '\'');
+    $booklist = ($type == 'tag')? $db->getTaggedBooks($current) : $db->getBookList('added desc', 'where author = \'' . SQLite3::escapeString($current) . '\'');
     $this->display->printBookList($booklist, 'books', $path[1]);
     echo $this->display->showDetails(new ebook($book->file));
     $this->display->printFoot();
@@ -163,7 +163,7 @@ class Dispatcher {
     $list = ($type == 'tag') ? $db->getTagList() : $db->getAuthorlist();
     $this->display->printHeader();
     $this->display->printAuthorList($list, $type, $current);
-    $booklist = ($type == 'tag')? $db->getTaggedBooks($current) : $db->getBookList('added desc', 'where author = \'' . sqlite_escape_string($current) . '\'');
+    $booklist = ($type == 'tag')? $db->getTaggedBooks($current) : $db->getBookList('added desc', 'where author = \'' . SQLite3::escapeString($current) . '\'');
     $this->display->printBookList($booklist, 'books', $path[1]);
     echo getEditForm($realbook, $url);
     $this->display->printFoot();
