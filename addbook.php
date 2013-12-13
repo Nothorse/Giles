@@ -32,16 +32,11 @@ class AddBook extends CommandLine {
   public function main() {
     global $argv;
     $file = $this->getArgument('FILE');
+    $paramdir = $this->getArgument('DIRECTORY');
+    $dir = ($paramdir) ? $paramdir : BASEDIR;
     if($file) {
       $book = new ebook($file);
-      $book->file = $book->cleanupFile($file);
-      $growl  = "/usr/local/bin/growlnotify ";
-//       $growl .= " -n 'Giles (Ebooklib)' ";
-      $growl .= "-m '" . $book->title . " by " . $book->author . "'";
-      $growl .= " -t 'Book added'";
-      system($growl, $out);
-      system('/usr/bin/logger $growl');
-      echo $growl;
+      $book->file = $book->cleanupFile($file, $dir);
       $lib = new library();
       $lib->insertBook($book);
     } else {
