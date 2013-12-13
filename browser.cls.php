@@ -5,12 +5,12 @@ class browserdisplay {
     foreach($list as $book) {
       $current =($curid == $book->id) ? ' class="current"' : '';
       if(strlen($book->title) > 0) {
-        echo "<li$current><a href=\"".$this->getproto()."://".SERVER.BASEURL."/show/".$book->id."/".$book->title."\">".$book->title." <span class=\"byline\">".$book->author."</a></li>\n";
+        echo "<li$current><a href=\"".$this->getproto()."://".SERVER.BASEURL."/show/".$book->id."/".$book->title."\">".$book->title." <span class=\"byline\">".$book->author."</span></a> <span class=\"dl-link\"><a href=\"".$this->getproto()."://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title . '.epub'."\">Download</a></span></li>\n";
       }
     }
     echo "<ul></div>";
   }
-  
+
   public function printAuthorList($list, $what, $current= null) {
     echo "<div id='list'><ul>";
     foreach($list as $id => $author) {
@@ -21,9 +21,9 @@ class browserdisplay {
       echo "<li$class><a href=\"http://".SERVER.BASEURL."/$what/".$author['name']."/\">".$id."</a></li>\n";
     }
     echo "<ul></div>";
-    
+
   }
-  
+
   public function getFormattedList($type = 'author') {
     $db = new library();
     $list = $db->getAuthorList();
@@ -34,7 +34,7 @@ class browserdisplay {
     $formattedlist .= '</ul>';
     return $formattedlist;
   }
-  
+
   public function listTags() {
     $db = new library();
     $list = $db->getTagList(false);
@@ -44,7 +44,7 @@ class browserdisplay {
     }
     return "<ul>$taglist</ul>";
   }
-  
+
   public function printHeader() {
     $self = 'http://'.SERVER.BASEURL;
     $taglist = $this->listTags();
@@ -81,23 +81,23 @@ class browserdisplay {
 EOT;
     echo $head;
   }
-  
+
   public function buildPage() {
-  
-  
+
+
   }
-  
+
   public function getproto() {
       if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') !== false) {
       return "epub";
     } else {
       return "http";
     }
-  
+
   }
-  
+
   public function showDetails($book, $protocol = 'http') {
-    $geturl = "$protocol://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title;
+    $geturl = "$protocol://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title . '.epub';
     $editurl = "http://".SERVER.BASEURL."/edit/".$book->id.'/'.$book->title;
     $deleteurl = "http://".SERVER.BASEURL."/delete/".$book->id.'/'.$book->title;
     $toc = $book->getFormattedToc("http://".SERVER.BASEURL);
@@ -112,7 +112,7 @@ EOT;
 EOT;
     return $details;
   }
-  
+
   public function getEditform($book, $url) {
     $tags = implode(', ', $book->tags);
     $form = <<<EOT
@@ -123,7 +123,7 @@ EOT;
     border: 2px #000 solid;
     padding: 3px;
   }
-  
+
   form {
     width: 800px;
     position: relative;
@@ -137,7 +137,7 @@ EOT;
     width: 800px;
     position:relative;
   }
-  
+
   input, textarea {
     width: 700px;
     height: 25px;
@@ -147,7 +147,7 @@ EOT;
     position: relative;
     display: block;
   }
-  
+
   textarea {
     height: 150px;
     line-height: 25px;
@@ -165,7 +165,7 @@ EOT;
 EOT;
   return $form;
   }
-  
+
   public function printFoot() {
     $foot = <<<EOT
   <script type="text/javascript" language="javascript" charset="utf-8">

@@ -147,13 +147,21 @@ padding: 2px 0 0 8px;
   width: 100%;
   line-height: 1em;
   font-size:0.9em;
-  padding: 5px;
+  padding: 7px;
   white-space:nowrap;
 }
 
+
 #list ul li a, #books ul li a, #bookswide ul li a {
-  display:block;
-  width: 100%;
+  display:inline-block;
+}
+
+.dl-link {
+  background: #DADFE8;
+  padding: 3px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-left: 13px;
 }
 
 #list li.current a, #books li.current a {
