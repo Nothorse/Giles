@@ -8,7 +8,7 @@ Currently there's a bit of manual work to get Giles going. Also some paths and m
 
 * Install the source anywhere you webserver can access it.
 * Create a directory for your books. I use "Books" at the root of my userdir.
-* Edit config.php
+* Copy config.php.template to config.php and edit config.php
 
 * Add the following entries to your apache config.
   (If you use a different webserver, prepare to virtual hosts along these lines)
