@@ -5,7 +5,10 @@ class browserdisplay {
     foreach($list as $book) {
       $current =($curid == $book->id) ? ' class="current"' : '';
       if(strlen($book->title) > 0) {
-        echo "<li$current><a href=\"".$this->getproto()."://".SERVER.BASEURL."/show/".$book->id."/".$book->title."\">".$book->title." <span class=\"byline\">".$book->author."</span></a> <span class=\"dl-link\"><a href=\"".$this->getproto()."://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title . '.epub'."\">Download</a></span></li>\n";
+        echo "<li$current>";
+        echo "<span class=\"dl-link\"><a href=\"".$this->getproto()."://".SERVER.BASEURL."/get/".$book->id.'/'.$book->title . '.epub'."\">Download</a></span>";
+        echo " <a href=\"".$this->getproto()."://".SERVER.BASEURL."/show/".$book->id."/".$book->title."\">".$book->title." <span class=\"byline\">".$book->author."</span></a>";
+        echo "</li>\n";
       }
     }
     echo "<ul></div>";
