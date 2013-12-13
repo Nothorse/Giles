@@ -7,7 +7,7 @@ class library{
 
   public function __construct($db = null) {
     if (!$db) {
-      $db = '/Users/'.USER.'/Library/Preferences/org.nothorse.ebooklib.library.sqlite';
+      $db = LIBRARY;
     }
     $this->db = $this->getdb($db);
     $this->checkTables();
@@ -64,20 +64,20 @@ class library{
   }
 
   public function insertBook($ebook) {
-    $qry = "insert into books (title, 
-                               author, 
-                               sortauthor, 
-                               file, 
-                               summary, 
-                               md5id, 
-                               added) 
-                               values 
+    $qry = "insert into books (title,
+                               author,
+                               sortauthor,
+                               file,
+                               summary,
+                               md5id,
+                               added)
+                               values
                    ('".SQLite3::escapeString($ebook->title)."',
-                    '".SQLite3::escapeString($ebook->author)."', 
-                    '".SQLite3::escapeString($ebook->sortauthor)."', 
-                    '".SQLite3::escapeString($ebook->file)."', 
-                    '".SQLite3::escapeString($ebook->summary)."', 
-                    '".SQLite3::escapeString($ebook->id)."', 
+                    '".SQLite3::escapeString($ebook->author)."',
+                    '".SQLite3::escapeString($ebook->sortauthor)."',
+                    '".SQLite3::escapeString($ebook->file)."',
+                    '".SQLite3::escapeString($ebook->summary)."',
+                    '".SQLite3::escapeString($ebook->id)."',
                     '".time()."')";
     $this->db->exec($qry);
     $qry = "select * from books where md5id = '".$ebook->id."'";
@@ -140,7 +140,7 @@ class library{
   }
 
   public function getBooklist($order = 'added desc', $where = '', $limit = false) {
-    $lwhere = urldecode($where); 
+    $lwhere = urldecode($where);
     $booklist = array();
     $limstr = ($limit) ? " LIMIT 30": '';
     $qry = "select * from books $lwhere order by $order $limstr";
@@ -155,10 +155,10 @@ class library{
         $book->id = $row['md5id'];
         $book->updated = $row['added'];
         $booklist[$book->sortauthor.$book->title] = $book;
-    } 
+    }
     return $booklist;
-  } 
-  
+  }
+
   public function getAuthorlist($order = 'sortauthor asc') {
     $booklist = array();
     $qry = "select author, title, sortauthor from books order by $order";

@@ -2,6 +2,9 @@
 define('USER', '##your_user##');
 define('BASEDIR', 'Books');
 define('BASEURL', '/index.php');
+// LIBRARY does not need to be changed on a mac, 
+// elsewhere use: '/path/to/library.sqlite'
+define('LIBRARY', '/Users/'.USER.'/Library/Preferences/org.nothorse.ebooklib.library.sqlite');
 define('ODPS', 9999);
 define('HTML', 8080);
 if(!SHELL) {
